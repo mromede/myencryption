@@ -1,0 +1,56 @@
+import javax.swing.JOptionPane;
+
+public class myencrption {
+
+	public static void main(String[] args) {
+		System.out.println("Welcome! Time for Encryption&Decryption!");
+		System.out.println("");
+		String input = JOptionPane.showInputDialog(null, "Please make an input here");
+		Object[] options = {"Encrypt", "Decrypt","Not Today"};
+		int n = JOptionPane.showOptionDialog(null,"Would you like to Encrypt or Decrypt the input you made?", "Security Question",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,options,options[2]);
+		int shift = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter your PRIVATE shift factor(private key)"));
+		//Encrypt = 0; Decrypt = 1; Not Today = 2;
+		if(n==0){
+			System.out.println("Below is your Encrypted Data: ");
+			System.out.println(encrypt(input, shift));
+			System.out.println("PS: If you see a none-alphabetical character, it means line gap/space.");
+		}else if(n==1){
+			System.out.println("Below is your Decrypted Data: ");
+			System.out.println(decrypt(input, shift));
+			System.out.println("PS: If you see a none-alphabetical character, it means line gap/space.");
+		}else if(n==2){
+			System.out.println("Ok, Goodbye!");
+			System.exit(0);
+		} 
+	}
+	
+	public static String encrypt(String input, int shift){
+		shift = shift%26; //takes care of large values
+	    String transform = "";
+	    int count = input.length();
+	    for(int i = 0; i < count; i++){
+	        char a = (char)(input.charAt(i) + shift);
+	        if (a > 'z'){
+	            transform += (char)(input.charAt(i) - (26-shift));
+	        }
+	        else{
+	        	transform += (char)(input.charAt(i) + shift);
+	        }
+	    }
+	    return transform;
+	}
+	
+	public static String decrypt(String input, int shift){
+		shift = shift%26;
+		char[] transform = input.toUpperCase().toCharArray();
+		for(int i = 0; i < input.length(); i++){
+			transform[i] = Character.toLowerCase(transform[i]);
+			transform[i] -= shift;
+			 if(transform[i] < 'a') {  
+				 transform[i] += 'z';
+				 transform[i] -= ('a' - 1); 
+			 }
+		}
+		return new String(transform);
+	}
+}
